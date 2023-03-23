@@ -1,5 +1,6 @@
-package com.sparta.springcore;
+package com.sparta.springcore.model;
 
+import com.sparta.springcore.dto.ProductRequestDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
