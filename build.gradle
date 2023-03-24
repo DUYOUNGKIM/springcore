@@ -28,6 +28,8 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	// 스프링 시큐리티
 	implementation 'org.springframework.boot:spring-boot-starter-security'
+	//스프링 시큐리티 테스트 모듈
+	testImplementation 'org.springframework.security:spring-security-test'
 	// Thymeleaf (뷰 템플릿 엔진)
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	//Junit 테스트사용
