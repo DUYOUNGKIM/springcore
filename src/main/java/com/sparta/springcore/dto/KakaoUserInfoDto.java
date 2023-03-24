@@ -1,12 +1,12 @@
 package com.sparta.springcore.dto;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 
-@AllArgsConstructor  // 생성자를 대신해준다
+@Getter
+@AllArgsConstructor
 public class KakaoUserInfoDto {
     private Long id;
     private String nickname;
     private String email;
-
-
 }

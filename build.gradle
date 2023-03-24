@@ -30,8 +30,11 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	// Thymeleaf (뷰 템플릿 엔진)
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	//Junit 테스트사용
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
-
-tasks.named('test') {
+//Junit 테스트
+test {
 	useJUnitPlatform()
 }
+
