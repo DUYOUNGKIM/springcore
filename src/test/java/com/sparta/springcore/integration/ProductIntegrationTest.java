@@ -7,8 +7,7 @@ import com.sparta.springcore.service.ProductService;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -28,7 +27,7 @@ class ProductIntegrationTest {
     @Order(1)
     @DisplayName("신규 관심상품 등록")
     void test1() {
-        // given
+// given
         String title = "Apple <b>에어팟</b> 2세대 유선충전 모델 (MV7N2KH/A)";
         String imageUrl = "https://shopping-phinf.pstatic.net/main_1862208/18622086330.20200831140839.jpg";
         String linkUrl = "https://search.shopping.naver.com/gate.nhn?id=18622086330";
@@ -40,10 +39,10 @@ class ProductIntegrationTest {
                 lPrice
         );
 
-        // when
+// when
         Product product = productService.createProduct(requestDto, userId);
 
-        // then
+// then
         assertNotNull(product.getId());
         assertEquals(userId, product.getUserId());
         assertEquals(title, product.getTitle());
@@ -51,22 +50,22 @@ class ProductIntegrationTest {
         assertEquals(linkUrl, product.getLink());
         assertEquals(lPrice, product.getLprice());
         assertEquals(0, product.getMyprice());
-        createdProduct = product;  //새로생성된 product 정보를 가지고있다 ,다른테스트에 사용가능
+        createdProduct = product;
     }
 
     @Test
     @Order(2)
     @DisplayName("신규 등록된 관심상품의 희망 최저가 변경")
     void test2() {
-        // given
+// given
         Long productId = this.createdProduct.getId();
         int myPrice = 70000;
         ProductMypriceRequestDto requestDto = new ProductMypriceRequestDto(myPrice);
 
-        // when
+// when
         Product product = productService.updateProduct(productId, requestDto);
 
-        // then
+// then
         assertNotNull(product.getId());
         assertEquals(userId, product.getUserId());
         assertEquals(this.createdProduct.getTitle(), product.getTitle());
@@ -81,20 +80,24 @@ class ProductIntegrationTest {
     @Order(3)
     @DisplayName("회원이 등록한 모든 관심상품 조회")
     void test3() {
-        // given
+// given
+        int page = 0;
+        int size = 10;
+        String sortBy = "id";
+        boolean isAsc = false;
 
-        // when
-        List<Product> productList = productService.getProducts(userId);
+// when
+        Page<Product> productList = productService.getProducts(userId, page, size, sortBy, isAsc);
 
-        // then
-        // 1. 전체 상품에서 테스트에 의해 생성된 상품 찾아오기 (상품의 id 로 찾음)
+// then
+// 1. 전체 상품에서 테스트에 의해 생성된 상품 찾아오기 (상품의 id 로 찾음)
         Long createdProductId = this.createdProduct.getId();
         Product foundProduct = productList.stream()
                 .filter(product -> product.getId().equals(createdProductId))
                 .findFirst()
                 .orElse(null);
 
-        // 2. Order(1) 테스트에 의해 생성된 상품과 일치하는지 검증
+// 2. Order(1) 테스트에 의해 생성된 상품과 일치하는지 검증
         assertNotNull(foundProduct);
         assertEquals(userId, foundProduct.getUserId());
         assertEquals(this.createdProduct.getId(), foundProduct.getId());
@@ -103,7 +106,7 @@ class ProductIntegrationTest {
         assertEquals(this.createdProduct.getLink(), foundProduct.getLink());
         assertEquals(this.createdProduct.getLprice(), foundProduct.getLprice());
 
-        // 3. Order(2) 테스트에 의해 myPrice 가격이 정상적으로 업데이트되었는지 검증
+// 3. Order(2) 테스트에 의해 myPrice 가격이 정상적으로 업데이트되었는지 검증
         assertEquals(this.updatedMyPrice, foundProduct.getMyprice());
     }
 }
